@@ -104,6 +104,7 @@ public class Menu {
                 FileReader fileReaderFromConsole = new FileReader(path);
                 fileReader = fileReaderFromConsole;
                 readWordFromFile();
+                consoleWriter.print(Constants.FILE_EXIST);
                 return;
             } catch (FileNotFoundException e) {
                 consoleWriter.print(Constants.FILE_NOT_EXIST);
