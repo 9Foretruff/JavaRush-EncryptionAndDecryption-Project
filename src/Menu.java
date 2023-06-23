@@ -13,6 +13,8 @@ public class Menu {
     private Encrypt encrypt;
     private FileReader fileReader;
     private String wordFromFile = "";
+    private static final int TO_ENCRYPT = 1;
+    private static final int TO_DECRYPT = 2;
 
     public Menu(ConsoleWriter consoleWriter, Scanner scanner) {
         this.consoleWriter = consoleWriter;
@@ -34,10 +36,10 @@ public class Menu {
             whichLocalization();
             userTypePathOfFile();
             int mode = whichModeEncryptOrDecrypt();
-            if (mode == 1) {
+            if (mode == TO_ENCRYPT) {
                 encrypt = new Encrypt(consoleWriter);
                 encrypt.encrypt(wordFromFile);
-            } else {
+            } else if (mode == TO_DECRYPT){
                 decrypt = new Decrypt(consoleWriter);
                 decrypt.decrypt(wordFromFile);
             }
@@ -50,10 +52,10 @@ public class Menu {
             var temp = scanner.next();
             Scanner scanner1 = new Scanner(temp);
             if (scanner1.hasNextInt()) {
-                if (Integer.valueOf(temp) == 1) {
+                if (Integer.valueOf(temp) == TO_ENCRYPT) {
                     consoleWriter.print(Constants.YOU_CHOICE_TO_ENCRYPT);
                     return 1;
-                } else if (Integer.valueOf(temp) == 2) {
+                } else if (Integer.valueOf(temp) == TO_DECRYPT) {
                     consoleWriter.print(Constants.YOU_CHOICE_TO_DECRYPT);
                     return 2;
                 } else {
