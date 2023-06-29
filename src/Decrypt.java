@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Decrypt {
+    private static final String EXIT = "exit";
     private ConsoleWriter consoleWriter;
 
     public Decrypt(ConsoleWriter consoleWriter) {
@@ -20,10 +21,10 @@ public class Decrypt {
                 }
                 fileWriter.write("\n");
             }
-            Scanner scanner = new Scanner(System.in);
+            Scanner userChoice = new Scanner(System.in);
             consoleWriter.print(Constants.USER_WANT_TO_EXIT);
-            String choice = scanner.nextLine();
-            if ("exit".equals(choice.toLowerCase())) {
+            String choice = userChoice.nextLine();
+            if (EXIT.equals(choice.toLowerCase())) {
                 consoleWriter.print(Constants.THANKS_FOR_USING);
                 Menu.setRunning(false);
             }

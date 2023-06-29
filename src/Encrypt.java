@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Encrypt {
+    private static final String EXIT = "exit";
     private int shift;
     private ConsoleWriter consoleWriter;
 
@@ -12,16 +13,16 @@ public class Encrypt {
     }
 
     public void encrypt(String word) {
-        shift = howMuchMoveToRight();
+        shift = askUserFromConsoleHowMuchMoveToRight();
         String encryptWord = "";
         for (int i = 0; i < word.length(); i++) {
             encryptWord = encryptWord + symbolRightShift(word.charAt(i), shift);
         }
         makeFileWithEncryptWord(encryptWord);
-        Scanner scanner = new Scanner(System.in);
+        Scanner userChoice = new Scanner(System.in);
         consoleWriter.print(Constants.USER_WANT_TO_EXIT);
-        String choice = scanner.nextLine();
-        if ("exit".equals(choice.toLowerCase())) {
+        String choice = userChoice.nextLine();
+        if (EXIT.equals(choice.toLowerCase())) {
             consoleWriter.print(Constants.THANKS_FOR_USING);
             Menu.setRunning(false);
         }
@@ -35,13 +36,13 @@ public class Encrypt {
         }
     }
 
-    private int howMuchMoveToRight() {
+    private int askUserFromConsoleHowMuchMoveToRight() {
         consoleWriter.print(Constants.TYPE_SHIFT);
-        Scanner scanner = new Scanner(System.in);
+        Scanner userWordFromConsole = new Scanner(System.in);
         while (true) {
-            var temp = scanner.next();
-            Scanner scanner1 = new Scanner(temp);
-            if (scanner1.hasNextInt()) {
+            var temp = userWordFromConsole.next();
+            Scanner askUserHowMuchMoveToRight = new Scanner(temp);
+            if (askUserHowMuchMoveToRight.hasNextInt()) {
                 return Integer.valueOf(temp);
             } else {
                 consoleWriter.print(Constants.YOU_TYPE_NOT_INT);
@@ -51,7 +52,7 @@ public class Encrypt {
 
     private void makeFileWithEncryptWord(String word) {
         File file = new File("EncryptWord");
-        try (FileWriter fileWriter = new FileWriter(file)){
+        try (FileWriter fileWriter = new FileWriter(file)) {
             for (int i = 0; i < word.length(); i++) {
                 fileWriter.write(word.charAt(i));
                 fileWriter.flush();
