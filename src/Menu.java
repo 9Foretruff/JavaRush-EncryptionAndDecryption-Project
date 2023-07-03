@@ -1,10 +1,14 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu {
+    private static final int TO_ENCRYPT = 1;
+    private static final int TO_DECRYPT = 2;
+    private static final int UKRAINIAN_ALPHABET = 1;
+    private static final int ENGLISH_ALPHABET = 2;
+    private static final int SYMBOL_ALPHABET = 3;
     private static boolean isRunning = true;
     private static String localization;
     private ConsoleWriter consoleWriter;
@@ -13,8 +17,6 @@ public class Menu {
     private Encrypt encrypt;
     private FileReader fileReader;
     private String wordFromFile = "";
-    private static final int TO_ENCRYPT = 1;
-    private static final int TO_DECRYPT = 2;
 
     public Menu(ConsoleWriter consoleWriter, Scanner scanner) {
         this.consoleWriter = consoleWriter;
@@ -32,26 +34,25 @@ public class Menu {
 
     public void start() {
         while (isRunning) {
-            File file = new File("hello");
-            whichLocalization();
-            userTypePathOfFile();
-            int mode = whichModeEncryptOrDecrypt();
+            getLocalizationFromConsole();
+            getPathFromConsole();
+            int mode = getEncryptOrDecryptFromConsole();
             if (mode == TO_ENCRYPT) {
                 encrypt = new Encrypt(consoleWriter);
                 encrypt.encrypt(wordFromFile);
-            } else if (mode == TO_DECRYPT){
+            } else if (mode == TO_DECRYPT) {
                 decrypt = new Decrypt(consoleWriter);
                 decrypt.decrypt(wordFromFile);
             }
         }
     }
 
-    private int whichModeEncryptOrDecrypt() {
+    private int getEncryptOrDecryptFromConsole() {
         consoleWriter.print(Constants.ASK_USER_WHICH_MODE_TO_USE);
         while (true) {
             var temp = scanner.next();
-            Scanner scanner1 = new Scanner(temp);
-            if (scanner1.hasNextInt()) {
+            Scanner userChoice = new Scanner(temp);
+            if (userChoice.hasNextInt()) {
                 if (Integer.valueOf(temp) == TO_ENCRYPT) {
                     consoleWriter.print(Constants.YOU_CHOICE_TO_ENCRYPT);
                     return 1;
@@ -67,23 +68,23 @@ public class Menu {
         }
     }
 
-    private void whichLocalization() {
+    private void getLocalizationFromConsole() {
         consoleWriter.print(Constants.LANGUAGE_LOCALIZATION);
-        Scanner scanner1 = new Scanner(System.in);
+        Scanner userWord = new Scanner(System.in);
         while (true) {
-            var temp = scanner1.next();
-            Scanner scanner2 = new Scanner(temp);
-            if (scanner2.hasNextInt()) {
+            var temp = userWord.next();
+            Scanner userLocalization = new Scanner(temp);
+            if (userLocalization.hasNextInt()) {
                 switch (Integer.valueOf(temp)) {
-                    case 1 -> {
+                    case UKRAINIAN_ALPHABET -> {
                         localization = Constants.UKRAINIAN_ALPHABET;
                         return;
                     }
-                    case 2 -> {
+                    case ENGLISH_ALPHABET -> {
                         localization = Constants.ENGLISH_ALPHABET;
                         return;
                     }
-                    case 3 -> {
+                    case SYMBOL_ALPHABET -> {
                         localization = Constants.SYMBOL_ALPHABET;
                         return;
                     }
@@ -97,7 +98,7 @@ public class Menu {
         }
     }
 
-    private void userTypePathOfFile() {
+    private void getPathFromConsole() {
         consoleWriter.print(Constants.TO_ENCRYPT);
         String path;
         while (true) {
